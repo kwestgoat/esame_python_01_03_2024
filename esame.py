@@ -22,35 +22,36 @@ class CSVTimeSeriesFile:
         for line in lines:
             elements = line.split(',')
 
+            #provo a vedere se i passeggeri sono un numero intero
             
             try:
                 elements[1] = int(elements[1])
             except:
                 continue
-
+            #se la linea non è formata solo da data-passeggeri la salto
             if len(elements) <2:
                 continue
 
             if len(elements) > 2:
                 elements = elements[:2]
-
+            #se il numero di passeggeri è minore di zero salto la linea
             if elements[1] <= 0:
                 continue
-
+            #se la data non è nel format corretto salto la linea
             if len(elements[0]) < 7:
                 continue
 
             date = elements[0].split("-")
-
+            #se la data non è formata solo da anno e mese salto la linea
             if len(date) != 2:
                 continue
-
+            #se la data non è formata da numeri la salto
             if not date[0].isdigit() or not date[1].isdigit():
                 continue
-
+            #se il mese non è corretto lo salto
             if(int(date[1]) < 1 or int(date[1]) > 12):
                 continue
-
+            #controllo se ci sono duplicati
             if old_elements is not None:
                 if elements[0] == old_elements[0]:
                     raise ExamException("date duplicate")
